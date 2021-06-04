@@ -1,6 +1,8 @@
 # Prerequisites
 *.d
 
+build/g4gBuild
+
 # Compiled Object files
 *.slo
 *.lo
