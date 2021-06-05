@@ -66,19 +66,28 @@ using namespace std;
 
 float myMatrix[4][4] = { { 1.0f, 0.0f, 0.0f, 0.5f },{ 0.0f, 1.0f, 0.0f, 0.5f },{ 0.0f, 0.0f, 1.0f, 0.0f },{ 0.0f, 0.0f, 0.0f, 1.0f } };
 
-
 string readFile(const char* filePath) {
-    string content;
-    ifstream fileStream(filePath, ios::in);
-    string line = "";
-    while (!fileStream.eof()) {
-        getline(fileStream, line);
-        content.append(line + "\n");
+    std::string content;
+    std::ifstream myFile;
+    // ensure ifstream objects can throw exceptions:
+    myFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try{
+        // open files
+        myFile.open(filePath);
+        std::stringstream myStream;
+        // read file's buffer contents into streams
+        myStream << myFile.rdbuf();
+        // close file handler
+        myFile.close();
+        // convert stream into string
+        content = myStream.str();
     }
-    fileStream.close();
+    catch (std::ifstream::failure& e)
+    {
+        std::cout << "ERROR::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+    }
     return content;
 }
-
 void writeMatrix(const char* filePath) {
     std::ofstream myfile;
 
